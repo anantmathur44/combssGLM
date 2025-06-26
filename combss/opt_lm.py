@@ -417,7 +417,7 @@ def adam(X, y,  lam, t_init,
 				count_to_term += 1
 				if count_to_term >= patience:
 					break
-			else:
+			else:	
 				count_to_term = 0
 				
 		else:
