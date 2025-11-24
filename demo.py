@@ -5,7 +5,6 @@ Frank-Wolfe Demo for Best Subset Selection
 This script demonstrates the Frank-Wolfe algorithm for logistic regression
 best subset selection using the COMBSS framework.
 
-Author: Generated from demo.ipynb
 """
 
 # ============================================================================
