@@ -1,6 +1,6 @@
-# COMBSS_GLM
+# COMBSS GLM
 
-**COMBSS_GLM** extends the original **COMBSS** framework to **generalized linear models (GLMs)**, providing tools for performing *combinatorial best-subset selection* across a wider range of likelihood models.
+**COMBSS GLM** extends the original **COMBSS** framework to **generalized linear models (GLMs)**, providing tools for performing *combinatorial best-subset selection* across a wider range of likelihood models.
 
 This repository builds on the methodology introduced in the original COMBSS project and adapts the optimisation and search algorithms to support GLMs such as logistic regression, Poisson regression, and other exponential-family models.
 
