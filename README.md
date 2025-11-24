@@ -8,14 +8,14 @@ This repository builds on the methodology introduced in the original COMBSS proj
 
 ## Related project
 
-This work is based on the original **COMBSS** repository by Sarat Moka:  
+This work is an extension of **COMBSS**:  
 ➡️ <https://github.com/saratmoka/COMBSS>
 
 ---
 
 ## Authors
 
-- **Anant Mathur** (UNSW Sydney)  
+- ** Dr. Anant Mathur** (UNSW Sydney)  
 - **Dr. Sarat Moka** (UNSW Sydney)  
 - **Prof. Benoît Liquet** (Macquarie University)
 
