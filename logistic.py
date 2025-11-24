@@ -1,7 +1,7 @@
 """
-combss.linear.py
+combss.logistic.py
 
-This public module contains a user-friendly interface for using the model class to conduct best 
+This module contains a user-friendly interface for using the model class to conduct best 
 subset selection via continuous optimisation for logistic regression.
 
 All optimisation logic is handled in the private _opt_log.py module.
