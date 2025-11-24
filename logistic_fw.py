@@ -1,8 +1,8 @@
 """
-combss.linear.py
+combss.logistic_fw.py
 
-This public module contains a user-friendly interface for using the model class to conduct best 
-subset selection via continuous optimisation for logistic regression.
+This module contains a user-friendly interface for using the model class to conduct best 
+subset selection via Frank-Wolfe continuous optimisation for logistic regression.
 
 All optimisation logic is handled in the private _opt_log.py module.
 """
@@ -146,5 +146,6 @@ class model:
         self.run_time = end_time - start_time
 
         return
+
 
 
