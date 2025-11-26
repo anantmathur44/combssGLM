@@ -11,11 +11,9 @@ This repository builds on the methodology introduced in the original COMBSS proj
 ### Python
 - **Python ≥ 3.10**
 
-### Core scientific computing libraries
+### Libraries
 - `numpy >= 1.21.0`
 - `scipy >= 1.12.0`  
-
-### Machine learning library
 - `scikit-learn >= 1.0.0`
 
 ---
