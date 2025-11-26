@@ -7,7 +7,7 @@ subset selection via continuous optimisation for logistic regression.
 All optimisation logic is handled in the private _opt_log.py module.
 """
 
-import combss._opt_log as olog
+import _opt_log as olog
 
 
 class model:
