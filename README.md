@@ -6,10 +6,24 @@ This repository builds on the methodology introduced in the original COMBSS proj
 
 ---
 
-## Related project
+## Requirements
+
+### Python
+- **Python ≥ 3.10
+
+### Core scientific computing libraries
+- `numpy >= 1.21.0`
+- `scipy >= 1.12.0`  
+
+### Machine learning library
+- `scikit-learn >= 1.0.0`
+
+---
+
+## Related Project
 
 This work is an extension of **COMBSS**:  
-➡️ <https://github.com/saratmoka/COMBSS>
+➡️ https://github.com/saratmoka/COMBSS
 
 ---
 
@@ -18,5 +32,3 @@ This work is an extension of **COMBSS**:
 - **Dr. Anant Mathur** (UNSW Sydney)  
 - **Dr. Sarat Moka** (UNSW Sydney)  
 - **Prof. Benoît Liquet** (Macquarie University)
-
----
