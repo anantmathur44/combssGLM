@@ -1,5 +1,5 @@
 """
-combss.logistic.py
+logistic.py
 
 This module contains a user-friendly interface for using the model class to conduct best 
 subset selection via continuous optimisation for logistic regression.
