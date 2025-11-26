@@ -1,7 +1,7 @@
 """
-combss._opt_log.py
+_opt_log.py
 
-This private module contains the optimisation-specific functions for combss.logistic.py.
+This module contains the optimisation-specific functions for logistic.py and logistic_fw.py
 
 Functions:
 - sigmoid(t): Returns the sigmoid mapping between t and w.
