@@ -1,5 +1,5 @@
 """
-combss.logistic_fw.py
+logistic_fw.py
 
 This module contains a user-friendly interface for using the model class to conduct best 
 subset selection via Frank-Wolfe continuous optimisation for logistic regression.
@@ -146,6 +146,7 @@ class model:
         self.run_time = end_time - start_time
 
         return
+
 
 
 
