@@ -236,12 +236,8 @@ def beta_tilde_sklearn(t,X, y, delta,
         raise ValueError("all t_j must lie in (0,1)")
     if delta <= 0:
         raise ValueError("`delta` must be positive")
-    #t = np.clip(t, clip_eps, 1 - clip_eps)
-    #print(f"t      = {t}")
-    # 1. scaling factors s_j = √[(1-t_j²)/t_j²] ------------------------
-    #print(f"t      = {(t[0:9])}")
+		
     scale_vec = np.sqrt((1 - t**2) / t**2)
-
     X_scaled = X.astype(float)
     if hasattr(X_scaled, "multiply"):          # sparse matrix
         X_scaled = X_scaled.multiply(1.0 / scale_vec)
@@ -350,12 +346,6 @@ def f_grad_cg(t, beta_start, X, y, delta,
     
     t_ext = np.concatenate(([1], t))
     gamma = t_ext*beta_tilde # gamma_t in the paper. Step 1 
-    #print(f"gamma_tilde      = {(gamma[0:10])}")
-    #print(f"t_vector:      = {t[:10]}") 
-    #print(f"gamma_tilde:     = {gamma[0:10]}")
-    #print(f"gamma_tilde:     = {np.sort(gamma)[-10:][::-1]}")
-
-
     vec = grad_llh(gamma, X, y) # step 2 
     v = hessian_gt_gamma_inv_vec_prod(vec, t, X, gamma, delta, cg_maxiter=cg_maxiter, cg_tol=cg_tol) # step 3
     #print(f"grad_l:     = {vec[0:10]}")
@@ -409,9 +399,7 @@ def fw(X, y, q,
     if cg_maxiter == None:
         cg_maxiter = p
         
-    #if scale:
-    #    column_norms = np.linalg.norm(X, axis=0)
-    #     X_norm = X / column_norms
+
     if scale:
         column_norms = np.linalg.norm(X[:, 1:], axis=0) 
         X_norm = X.copy() # skip first column
@@ -424,10 +412,7 @@ def fw(X, y, q,
         if verbose:
             print("Model size k = ", k)
         t = np.ones(p-1)*(k/(p-1))
-        # s = np.zeros(p, dtype=int)
-        # s[range(k)] = 1
-        
-        #t_list = [t.copy()]
+
             
         beta_start = np.zeros(p)
         delta = delta_min
@@ -439,31 +424,20 @@ def fw(X, y, q,
             
             if l%m == 0:
                 delta = delta*r
-            #print(f"k:      = {k}")
             grad, beta_start = f_grad_cg(t, beta_start, X_norm, y, delta, 
                                          solver = solver, cg_maxiter=cg_maxiter, cg_tol=cg_tol)
 
-            # Create the binary vector s
-            #print(grad[:10])
-            #if k == 1:
-            #    print("Gradient diagnostics:")
-            #    print(f"k      = {k}")
-            #    print(f"delta  = {delta}")
-            #    print(f"r      = {r}")
-            #print(f"grad:   = {grad[:10]}")
+
             model = np.argsort(grad)[:k]  # Indices of k smallest elements of the gradient
             s = np.zeros(p-1, dtype=int)
             s[model] = 1
             
             # Update t
-            #alpha = 1/(l+2)
             t = (1 - alpha) * t + alpha * s
 
-            #print(f"t:   = {t[:10]}")
-            #print(f"Iter:   = {l}")
+
             t[t < 0.0001] = 0.0001 # truncation for numerical stability
             t[t > 0.9999] = 0.9999 # truncation for numerical stability
-            #t_list.append(t.copy())
                 
             l += 1
             if np.any((t >= 0.001) & (t <= 0.999)):
