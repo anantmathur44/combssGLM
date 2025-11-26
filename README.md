@@ -9,7 +9,7 @@ This repository builds on the methodology introduced in the original COMBSS proj
 ## Requirements
 
 ### Python
-- **Python ≥ 3.10
+- **Python ≥ 3.10**
 
 ### Core scientific computing libraries
 - `numpy >= 1.21.0`
