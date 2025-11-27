@@ -1,5 +1,5 @@
 """
-combss._metrics.py
+metrics.py
 
 This private module contains logic for computing performance metrics for variable selection.
 Metrics computed:
