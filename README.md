@@ -66,6 +66,6 @@ This work is an extension of **COMBSS**:
 
 ## Authors
 
-- **Dr. Anant Mathur** (UNSW Sydney)  
-- **Dr. Sarat Moka** (UNSW Sydney)  
-- **Prof. Benoît Liquet** (Macquarie University)
+- **Anant Mathur** (UNSW Sydney)  
+- **Sarat Moka** (UNSW Sydney)  
+- **Benoît Liquet** (Macquarie University)
