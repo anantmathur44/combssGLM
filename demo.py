@@ -12,8 +12,8 @@ best subset selection using the COMBSS framework.
 # ============================================================================
 
 import numpy as np
-import logistic_fw as lfw
-import metrics
+import combssGLM.logistic_fw as lfw
+import combssGLM.metrics as metrics
 import time
 
 
@@ -33,8 +33,8 @@ def main():
     #train_path = "./data/n-200-p1000Replica1.csv"
     #test_path = "./data/n-200-p1000Test-Replica1.csv"
     # Alternative smaller datasets for testing:
-    train_path = "../data/Example_small_data_train.csv"
-    test_path = "../data/Example_small_data_test.csv"
+    train_path = "data/Example_small_data_train.csv"
+    test_path = "data/Example_small_data_test.csv"
 
     print("Loading data...")
     data = np.loadtxt(train_path, delimiter='\t', skiprows=0)

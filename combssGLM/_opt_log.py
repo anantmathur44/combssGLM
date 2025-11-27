@@ -8,6 +8,7 @@ Functions:
 - logit(w): Returns the logit mapping between w and t.
 - h(u, delta_frac): A helper function for the refined gradient expression.
 - f_grad_cg(): Computes the gradient expression, upsilon and numpy arrays to support the Woodbury matrix identity.
+- fw(): Executes the Frank-Wolfe algorithm to select a best subset of covariates.
 - adam(): Employs gradient descent with the Adam optimisers to minimise the novel objective function.
 - dynamic_grid(): Conducts a search over a dynamic grid of lambda values.
 - bss(): Manages the dynamic grid search, and conducts model evaluation.
@@ -27,21 +28,21 @@ class Result:
         self.niters = niters
 
 def logit(v):
-	""" 
-	Logit function applied elementwise 
-	"""
+    """ 
+    Logit function applied elementwise 
+    """
 
-	w = np.log(v/(1-v))
-	return w
+    w = np.log(v/(1-v))
+    return w
 
 
 def sigmoid(w):
-	""" 
-	Sigmoid function applied elementwise 
-	"""
+    """ 
+    Sigmoid function applied elementwise 
+    """
     
-	v = 1/(1+np.exp(-w))
-	return v
+    v = 1/(1+np.exp(-w))
+    return v
 
 def log_lh(X, y, beta):
     """
@@ -106,12 +107,11 @@ Conclusion: From simulations, we observed that SciPy based optimization is much 
 '''
 
 def beta_tilde_gd(t, X, y, beta_start, delta, 
-                  
-                  patience = 10,
+                  patience=10,
                   # Basic gradient descent parameters
-                  alpha = 0.1, 
-                  gd_tol = 0.00001, 
-                  gd_maxiter = 1000000):
+                  alpha=0.1, 
+                  gd_tol=0.00001, 
+                  gd_maxiter=1000000):
     '''
     Grdaient descent for obtaining beta_tilde_t at a given t
     '''
@@ -138,16 +138,15 @@ def beta_tilde_gd(t, X, y, beta_start, delta,
     return beta, converge
     
 def beta_tilde_adam(t, X, y, beta_start, delta, 
-    
-                    patience = 10,
+                    patience=10,
                     
                     # ADAM parameters
-                    alpha = 0.1, 
-                    xi1 = 0.9, 
-                    xi2 = 0.999,            
-                    epsilon = 10e-8,
-                    adam_tol = 0.001, 
-                    adam_maxiter = 1000):
+                    alpha=0.1, 
+                    xi1=0.9, 
+                    xi2=0.999,            
+                    epsilon=10e-8,
+                    adam_tol=0.001, 
+                    adam_maxiter=1000):
     '''
     ADAM optimization for obtaining beta_tilde_t at a given t
     '''
@@ -189,7 +188,6 @@ def beta_tilde_adam(t, X, y, beta_start, delta,
     return beta, converge
 
 def beta_tilde_sp(t, X, y, beta_start, delta,
-                   
                    # Minimize parameters
                    method='L-BFGS-B',
                    sp_tol=0.0001):
@@ -301,7 +299,6 @@ def hessian_gt_gamma_vec_prod(v, t,  X, gamma, delta):
     
 
 def hessian_gt_gamma_inv_vec_prod(v, t, X, gamma, delta,
-                                  
                                   # Parameters for cg
                                   cg_maxiter=None, 
                                   cg_tol=1e-5):
@@ -321,7 +318,7 @@ def hessian_gt_gamma_inv_vec_prod(v, t, X, gamma, delta,
     return u
 
 def f_grad_cg(t, beta_start, X, y, delta, 
-                solver = "adam", 
+                solver="adam", 
                 # Parameters for conjugate gradient
                 cg_maxiter=None,
                 cg_tol=1e-5):
@@ -356,7 +353,7 @@ def f_grad_cg(t, beta_start, X, y, delta,
 
 
 
-def f(t, X, y, delta, solver = "adam"):
+def f(t, X, y, delta, solver="adam"):
     
     (n, p) = X.shape
     beta_start = np.zeros(p)
@@ -381,17 +378,75 @@ def f(t, X, y, delta, solver = "adam"):
 
 #%%
 def fw(X, y, q, 
-        max_iter = 1000, 
+        max_iter=1000, 
         r=1.5, 
         m=10, 
-        scale = True,
-        delta_min = 0.02,    # smallest delta value on the grid
-        alpha=0.05,           # line search is applied if true 
-        patience = 10,        # patience parameter to terminate the algorithm
-        solver = 'adam',      # solver for obtaining beta for each t
+        scale=True,
+        delta_min=0.02,      # smallest delta value on the grid
+        alpha=0.05,          # line search is applied if true 
+        patience=10,         # patience parameter to terminate the algorithm
+        solver='adam',       # solver for obtaining beta for each t
         cg_maxiter=None,     # Maximum number of iterations allowed by CG
         cg_tol=0.001,
-        verbose = True):        # Tolerance of CG
+        verbose=True):       # Tolerance of CG
+    
+    """
+    Executes the Frank-Wolfe algorithm to select a best subset of covariates.
+
+    Parameters
+    ----------
+    X : array-like of shape (n, p)
+        The design matrix, where `n` is the number of samples in the dataset
+        and `p` is the number of covariates measured in each sample.
+    y : array-like of shape (n, )
+        The response data, where `n` is the number of samples in the dataset.
+    q : int
+        The maximum subset size of interest.
+    max_iter : int
+        The maximum number of iterations for the Frank-Wolfe algorithm.
+        Default value = 1000.
+    r : float
+        Parameter for Frank-Wolfe algorithm that controls delta scaling.
+        Default value = 1.5.
+    m : int
+        Parameter for Frank-Wolfe algorithm that controls delta update frequency.
+        Default value = 10.
+    scale : bool
+        Determines whether or not feature scaling is applied for optimisation.
+        Default value = True.
+    delta_min : float
+        The smallest delta value on the grid for Frank-Wolfe algorithm.
+        Default value = 0.02.
+    alpha : float
+        Line search parameter for Frank-Wolfe algorithm.
+        Default value = 0.05.
+    patience : int
+        The integer that specifies how many consecutive times the termination condition has to be satisfied
+        before the algorithm terminates.
+        Default value = 10.
+    solver : str
+        The solver for obtaining beta for each t ('adam', 'lbfgs', 'sklearn').
+        Default value = 'adam'.
+    cg_maxiter : int
+        The maximum number of iterations for the conjugate gradient algorithm.
+        Default value = None.
+    cg_tol : float
+        The acceptable tolerance used for the termination condition in the conjugate gradient 
+        algorithms.
+        Default value = 0.001.
+    verbose : bool
+        If True, prints progress to the console.
+        Default value = True.
+
+    Returns
+    -------
+    result : Result
+        An object containing the following attributes:
+        - models : list of arrays
+            The list of subsets obtained by Frank-Wolfe algorithm for each model size k=1,2,...,q.
+        - niters : list of integers
+            The list of iteration counts for each model size k=1,2,...,q.
+    """
 
     (n, p) = X.shape
     
@@ -463,27 +518,27 @@ def fw(X, y, q,
 #%%
 
 def adam(X, y,  lam, t_init,
-        delta_frac = 1,
+        delta_frac=1,
 
         ## Adam parameters
-        xi1 = 0.9, 
-        xi2 = 0.999,            
-        alpha = 0.1, 
-        epsilon = 10e-8,
+        xi1=0.9, 
+        xi2=0.999,            
+        alpha=0.1, 
+        epsilon=10e-8,
      
         ## Parameters for Termination
-        gd_maxiter = 100000,
-        gd_tol = 1e-5,
-        max_norm = True,    # By default, we use max norm as the termination condition.
+        gd_maxiter=100000,
+        gd_tol=1e-5,
+        max_norm=True,    # By default, we use max norm as the termination condition.
         patience=10,
         
         ## Truncation parameters
-        tau = 0.5,
-        eta = 0.0, 
+        tau=0.5,
+        eta=0.0, 
         
         ## Parameters for Conjugate Gradient method
-        cg_maxiter = None,
-        cg_tol = 1e-5):
+        cg_maxiter=None,
+        cg_tol=1e-5):
     
     """ The Adam optimiser used within the COMBSS algorithm.
 
@@ -680,11 +735,11 @@ def adam(X, y,  lam, t_init,
 
 
 def dynamic_grid(X, y, t_init,
-                   q = None,
-                   nlam = None,
+                   q=None,
+                   nlam=None,
                    tau=0.5,             # tau parameter
                    delta_frac=1,        # delta_frac = n/delta
-                   fstage_frac = 0.5,   # Fraction lambda values explored in first stage of dynamic grid
+                   fstage_frac=0.5,     # Fraction lambda values explored in first stage of dynamic grid
                    eta=0.0,             # Truncation parameter
                    patience=10,         # Patience period for termination 
                    gd_maxiter=1000,     # Maximum number of iterations allowed by GD
@@ -870,10 +925,10 @@ def dynamic_grid(X, y, t_init,
 
 
 def bss(X_train, y_train, X_test, y_test, 
-            q = None,           # Maximum subset size
-            nlam = 50,          # Number of values in the lambda grid
-            t_init= [],         # Initial t vector
-            scaling = False,    # If True, the training data is scaled 
+            q=None,             # Maximum subset size
+            nlam=50,            # Number of values in the lambda grid
+            t_init=[],          # Initial t vector
+            scaling=False,      # If True, the training data is scaled 
             tau=0.5,            # Threshold parameter
             delta_frac=1,       # delta_frac = n/delta
             eta=0.001,          # Truncation parameter
@@ -883,7 +938,7 @@ def bss(X_train, y_train, X_test, y_test,
             cg_maxiter=None,    # Maximum number of iterations allowed by CG
             cg_tol=1e-5):
     
-    """ Best subset selection from the list of subsets generated by COMBSS with 
+    """ Best subset selection from the list of subsets generated by COMBSS with  
         SubsetMapV1 as proposed in the original paper Moka et al. (2024)
         over a grid of dynamically generated lambdas.
 

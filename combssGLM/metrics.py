@@ -18,7 +18,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
 def classification_acc(model_idx1, Xtrain, ytrain, Xtest, ytest,
-                            threshold=0.5, return_error=False):
+                       threshold=0.5, return_error=False):
 
     # Remove first column before selecting
     Xtrain = Xtrain[:, 1:]
@@ -50,8 +50,6 @@ def classification_acc(model_idx1, Xtrain, ytrain, Xtest, ytest,
 
 
 def performance_metrics(beta_true, beta_pred):
-    
-
     """
     Computes MCC, Accuracy, Sensitivity, Specificity, and F1
     for COMBSS variable selection performance.

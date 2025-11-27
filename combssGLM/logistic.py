@@ -7,7 +7,7 @@ subset selection via continuous optimisation for logistic regression.
 All optimisation logic is handled in the private _opt_log.py module.
 """
 
-import _opt_log as olog
+from . import _opt_log as olog
 
 
 class model:
@@ -39,9 +39,9 @@ class model:
         self.lambda_list = None
         
     def fit(self, X_train, y_train, X_test, y_test, 
-                q = None,           # maximum subset size
-                nlam = 50,          # number of values in the lambda grid
-                t_init= [],         # Initial t vector
+                q=None,             # maximum subset size
+                nlam=50,            # number of values in the lambda grid
+                t_init=[],          # Initial t vector
                 scaling=True,       # If True, the training data is scaled 
                 tau=0.5,            # tau parameter
                 delta_frac=1,       # delta_frac = n/delta

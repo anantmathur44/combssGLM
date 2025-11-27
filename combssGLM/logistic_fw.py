@@ -7,7 +7,7 @@ subset selection via Frank-Wolfe continuous optimisation for logistic regression
 All optimisation logic is handled in the private _opt_log.py module.
 """
 
-import _opt_log as olog
+from . import _opt_log as olog
 import time
 
 
@@ -32,18 +32,18 @@ class model:
         self.niter_list = None
         
     def fit(self, X_train, y_train,
-                q = None,           # maximum subset size
-                max_iter = 1000,    # maximum iterations for Frank-Wolfe
-                r = 1.5,            # parameter for Frank-Wolfe
-                m = 10,             # parameter for Frank-Wolfe
-                scale = True,       # If True, the training data is scaled 
-                delta_min = 0.02,   # smallest delta value on the grid
-                alpha = 0.05,       # line search parameter
-                patience = 10,      # Patience period for termination 
-                solver = 'adam',    # solver for obtaining beta for each t
-                cg_maxiter = None,  # Maximum number of iterations allowed by CG
-                cg_tol = 0.001,     # Tolerance of CG
-                verbose = True):    # verbose output
+                q=None,           # maximum subset size
+                max_iter=1000,    # maximum iterations for Frank-Wolfe
+                r=1.5,            # parameter for Frank-Wolfe
+                m=10,             # parameter for Frank-Wolfe
+                scale=True,       # If True, the training data is scaled 
+                delta_min=0.02,   # smallest delta value on the grid
+                alpha=0.05,       # line search parameter
+                patience=10,      # Patience period for termination 
+                solver='adam',    # solver for obtaining beta for each t
+                cg_maxiter=None,  # Maximum number of iterations allowed by CG
+                cg_tol=0.001,     # Tolerance of CG
+                verbose=True):    # verbose output
         
         """ 
         Fits the data to select a best subset of covariates using the Frank-Wolfe algorithm.
